@@ -22,18 +22,6 @@ The project provides an easy-to-use interface for viewing air quality informatio
 - CSS3
 - JavaScript
 
-## 📂 Project Structure
-
-```text
-india-aqi-tracker/
-│
-├── index.html
-├── style.css
-├── app.js
-└── README.md
-│
-└── assets/screenshots
-
 ## 📸 Screenshots
 
 ### 💻 Laptop Home
