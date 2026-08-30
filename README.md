@@ -1,6 +1,6 @@
 # 🇮🇳 India AQI Tracker
 
-A simple and responsive web application that allows users to check the Air Quality Index (AQI) of cities in India.
+A simple and responsive web application that allows users to check the Air Quality Index (AQI) of cities with health reccommendations in India.
 
 ## 📌 About the Project
 
@@ -31,3 +31,19 @@ india-aqi-tracker/
 ├── style.css
 ├── app.js
 └── README.md
+│
+└── assets/screenshots
+
+## 📸 Screenshots
+
+### 💻 Laptop Home
+![Laptop Home](assets/screenshots/Laptop%20Home.png)
+
+### 🔍 Laptop Search
+![Laptop Search](assets/screenshots/Laptop%20Search.png)
+
+### 📰 Laptop News
+![Laptop News](assets/screenshots/Laptop%20News.png)
+
+### 📱 Mobile Home
+![Mobile Home](assets/screenshots/Mobile%20home.jpeg)
