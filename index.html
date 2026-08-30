@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>India AQI & Health Tracker</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: #f4f7f6;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 5%;
+      background: #0f172a;
+      color: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .navbar .logo {
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    .navbar .logo span {
+      color: #10b981;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 20px;
+    }
+
+    .nav-links a {
+      color: #cbd5e1;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: #10b981;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      color: white;
+      padding: 3.5rem 1rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      color: #94a3b8;
+      margin-bottom: 25px;
+    }
+
+    .search-box {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: white;
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 6px 12px;
+      border-radius: 30px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .search-box i {
+      color: #64748b;
+      margin-left: 10px;
+    }
+
+    .search-box select {
+      border: none;
+      outline: none;
+      padding: 10px;
+      font-size: 1rem;
+      flex: 1;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .search-box button {
+      background: #10b981;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.3s;
+    }
+
+    .search-box button:hover {
+      background: #059669;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+
+    .location-name {
+      color: #64748b;
+      font-size: 0.95rem;
+      margin-bottom: 15px;
+    }
+
+    .aqi-badge {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    #aqiValue {
+      font-size: 3.5rem;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .status-tag {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: white;
+      background: #94a3b8;
+    }
+
+    .pollutants {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .pollutant-box {
+      background: #f8fafc;
+      padding: 10px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+    }
+
+    .weather-info {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      margin-top: 20px;
+    }
+
+    .temp-box {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .temp-box i {
+      color: #ef4444;
+    }
+
+    .weather-details p {
+      margin-bottom: 8px;
+      color: #475569;
+    }
+
+    .health-section {
+      margin-bottom: 40px;
+    }
+
+    .health-section h2, .news-section h2 {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      color: #0f172a;
+    }
+
+    .health-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .health-card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+      text-align: center;
+    }
+
+    .health-card i {
+      font-size: 2rem;
+      color: #10b981;
+      margin-bottom: 12px;
+    }
+
+    .health-card h4 {
+      margin-bottom: 8px;
+    }
+
+    .health-card p {
+      font-size: 0.9rem;
+      color: #64748b;
+    }
+
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .news-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .news-card h4 {
+      font-size: 1.05rem;
+      margin-bottom: 10px;
+      color: #1e293b;
+    }
+
+    .news-card p {
+      font-size: 0.88rem;
+      color: #64748b;
+      margin-bottom: 15px;
+    }
+
+    .news-card a {
+      color: #10b981;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+
+    .news-card a:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #0f172a;
+      color: #94a3b8;
+      font-size: 0.85rem;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="logo">
+      <i class="fa-solid fa-wind"></i> AirHealth <span>India</span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#overview">AQI Overview</a></li>
+      <li><a href="#health-guide">Health Advice</a></li>
+      <li><a href="#health-news">Health News</a></li>
+    </ul>
+  </nav>
+
+  <header class="hero" id="overview">
+    <div class="hero-content">
+      <h1>India Air Quality & Health Tracker</h1>
+      <p>Real-time AQI tracking, weather forecasts, and environmental health updates across Indian states.</p>
+      
+      <div class="search-box">
+        <i class="fa-solid fa-location-dot"></i>
+        <select id="citySelect">
+          <option value="28.6139,77.2090">Delhi (NCR)</option>
+          <option value="19.0760,72.8777">Mumbai</option>
+          <option value="12.9716,77.5946">Bengaluru</option>
+          <option value="13.0827,80.2707">Chennai</option>
+          <option value="22.5726,88.3639">Kolkata</option>
+          <option value="17.3850,78.4867">Hyderabad</option>
+          <option value="23.0225,72.5714">Ahmedabad</option>
+          <option value="26.9124,75.7873">Jaipur</option>
+          <option value="26.8467,80.9462">Lucknow</option>
+          <option value="30.7333,76.7794">Chandigarh</option>
+        </select>
+        <button id="fetchBtn"><i class="fa-solid fa-magnifying-glass"></i> Check AQI</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="cards-grid">
+      <div class="card aqi-card">
+        <h3>Air Quality Index (AQI)</h3>
+        <p class="location-name" id="cityName">Delhi (NCR)</p>
+        <div class="aqi-badge" id="aqiBadge">
+          <span id="aqiValue">--</span>
+          <span id="aqiStatus" class="status-tag">Loading...</span>
+        </div>
+        <p class="aqi-desc" id="aqiDesc">Fetching live atmospheric data...</p>
+        
+        <div class="pollutants">
+          <div class="pollutant-box"><span>PM2.5</span><strong id="pm25">-- µg/m³</strong></div>
+          <div class="pollutant-box"><span>PM10</span><strong id="pm10">-- µg/m³</strong></div>
+          <div class="pollutant-box"><span>NO₂</span><strong id="no2">-- µg/m³</strong></div>
+          <div class="pollutant-box"><span>O₃</span><strong id="o3">-- µg/m³</strong></div>
+        </div>
+      </div>
+
+      <div class="card weather-card">
+        <h3>Current Weather</h3>
+        <div class="weather-info">
+          <div class="temp-box">
+            <i class="fa-solid fa-temperature-three-quarters"></i>
+            <span id="tempValue">--</span>°C
+          </div>
+          <div class="weather-details">
+            <p><i class="fa-solid fa-droplet"></i> Humidity: <strong id="humidity">--%</strong></p>
+            <p><i class="fa-solid fa-wind"></i> Wind Speed: <strong id="windSpeed">-- km/h</strong></p>
+            <p><i class="fa-solid fa-sun"></i> UV Index: <strong id="uvIndex">--</strong></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="health-section" id="health-guide">
+      <h2><i class="fa-solid fa-heart-pulse"></i> Health Recommendations</h2>
+      <div class="health-grid">
+        <div class="health-card">
+          <i class="fa-solid fa-mask-face"></i>
+          <h4>Mask Usage</h4>
+          <p id="maskAdvice">Check live AQI to see if N95 masks are recommended outdoors.</p>
+        </div>
+        <div class="health-card">
+          <i class="fa-solid fa-person-running"></i>
+          <h4>Outdoor Activities</h4>
+          <p id="outdoorAdvice">Check live AQI for outdoor exercise advisories.</p>
+        </div>
+        <div class="health-card">
+          <i class="fa-solid fa-air-purifier"></i>
+          <h4>Indoor Air</h4>
+          <p id="indoorAdvice">Keep windows open for ventilation or use air purifiers as needed.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="news-section" id="health-news">
+      <h2><i class="fa-solid fa-newspaper"></i> Latest Health & Environmental News</h2>
+      <div class="news-grid" id="newsGrid"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2026 AirHealth India. Data powered by Open-Meteo Open Data API.</p>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const citySelect = document.getElementById("citySelect");
+      const fetchBtn = document.getElementById("fetchBtn");
+
+      fetchData(28.6139, 77.2090, "Delhi (NCR)");
+      loadHealthNews();
+
+      fetchBtn.addEventListener("click", () => {
+        const [lat, lon] = citySelect.value.split(",");
+        const cityName = citySelect.options[citySelect.selectedIndex].text;
+        fetchData(lat, lon, cityName);
+      });
+    });
+
+    async function fetchData(lat, lon, name) {
+      document.getElementById("cityName").innerText = name;
+      document.getElementById("aqiStatus").innerText = "Updating...";
+
+      try {
+        const aqiRes = await fetch(
+          `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lon}&current=us_aqi,pm10,pm2_5,carbon_monoxide,nitrogen_dioxide,ozone`
+        );
+        const aqiData = await aqiRes.json();
+        
+        const weatherRes = await fetch(
+          `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,wind_speed_10m,uv_index`
+        );
+        const weatherData = await weatherRes.json();
+
+        updateUI(aqiData.current, weatherData.current);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        document.getElementById("aqiStatus").innerText = "Error loading data";
+      }
+    }
+
+    function updateUI(aqi, weather) {
+      const usAqi = Math.round(aqi.us_aqi);
+      
+      document.getElementById("aqiValue").innerText = usAqi;
+      document.getElementById("pm25").innerText = `${aqi.pm2_5} µg/m³`;
+      document.getElementById("pm10").innerText = `${aqi.pm10} µg/m³`;
+      document.getElementById("no2").innerText = `${aqi.nitrogen_dioxide} µg/m³`;
+      document.getElementById("o3").innerText = `${aqi.ozone} µg/m³`;
+
+      document.getElementById("tempValue").innerText = Math.round(weather.temperature_2m);
+      document.getElementById("humidity").innerText = `${weather.relative_humidity_2m}%`;
+      document.getElementById("windSpeed").innerText = `${weather.wind_speed_10m} km/h`;
+      document.getElementById("uvIndex").innerText = weather.uv_index;
+
+      const statusElem = document.getElementById("aqiStatus");
+      const descElem = document.getElementById("aqiDesc");
+      const maskAdvice = document.getElementById("maskAdvice");
+      const outdoorAdvice = document.getElementById("outdoorAdvice");
+      const indoorAdvice = document.getElementById("indoorAdvice");
+
+      if (usAqi <= 50) {
+        statusElem.innerText = "Good";
+        statusElem.style.backgroundColor = "#10b981";
+        descElem.innerText = "Air quality is satisfactory, and air pollution poses little or no risk.";
+        maskAdvice.innerText = "No mask required. Enjoy clean air!";
+        outdoorAdvice.innerText = "Ideal condition for outdoor exercise and activities.";
+        indoorAdvice.innerText = "Good time to ventilate your home with fresh air.";
+      } else if (usAqi <= 100) {
+        statusElem.innerText = "Moderate";
+        statusElem.style.backgroundColor = "#f59e0b";
+        descElem.innerText = "Air quality is acceptable. Sensitive individuals may experience mild irritation.";
+        maskAdvice.innerText = "Masks optional; recommended only for highly sensitive individuals.";
+        outdoorAdvice.innerText = "Unrestricted outdoor activities for most people.";
+        indoorAdvice.innerText = "Keep windows open unless you notice irritation.";
+      } else if (usAqi <= 150) {
+        statusElem.innerText = "Unhealthy for Sensitive Groups";
+        statusElem.style.backgroundColor = "#f97316";
+        descElem.innerText = "Members of sensitive groups may experience health effects.";
+        maskAdvice.innerText = "N95 masks recommended for elders, children, and asthmatics.";
+        outdoorAdvice.innerText = "Reduce prolonged outdoor exertion if experiencing symptoms.";
+        indoorAdvice.innerText = "Close windows to reduce outdoor pollution entrance.";
+      } else if (usAqi <= 200) {
+        statusElem.innerText = "Unhealthy";
+        statusElem.style.backgroundColor = "#ef4444";
+        descElem.innerText = "Everyone may begin to experience health effects.";
+        maskAdvice.innerText = "N95 or KN95 masks strongly advised outdoors.";
+        outdoorAdvice.innerText = "Avoid intense outdoor exercise. Take frequent breaks inside.";
+        indoorAdvice.innerText = "Run air purifiers indoors and keep windows closed.";
+      } else {
+        statusElem.innerText = "Very Unhealthy / Severe";
+        statusElem.style.backgroundColor = "#881337";
+        descElem.innerText = "Health alert: Everyone may experience more serious health effects.";
+        maskAdvice.innerText = "Mandatory N95 mask usage whenever stepping outdoors.";
+        outdoorAdvice.innerText = "Avoid all outdoor physical activities.";
+        indoorAdvice.innerText = "Use air purifiers on high mode and seal window gaps.";
+      }
+    }
+
+    function loadHealthNews() {
+      const news = [
+        {
+          title: "Understanding PM2.5 and Its Impact on Respiratory Health",
+          desc: "Learn how microscopic particulate matter penetrates deep into lungs and blood vessels, and how to protect yourself.",
+          link: "https://www.who.int/news-room/fact-sheets/detail/ambient-(outdoor)-air-quality-and-health"
+        },
+        {
+          title: "How to Choose the Right Air Purifier for Indian Homes",
+          desc: "HEPA filters vs Ionizers: Key features to look for when buying an air purifier to combat indoor pollution.",
+          link: "https://www.cpcb.nic.in"
+        },
+        {
+          title: "Nutrition Tips to Boost Immunity Against Air Pollution",
+          desc: "Dietitians recommend antioxidants, vitamin C, and omega-3 rich foods to fight inflammation caused by toxic smog.",
+          link: "https://www.mohfw.gov.in"
+        }
+      ];
+
+      const newsGrid = document.getElementById("newsGrid");
+      newsGrid.innerHTML = news
+        .map(
+          (item) => `
+        <div class="news-card">
+          <div>
+            <h4>${item.title}</h4>
+            <p>${item.desc}</p>
+          </div>
+          <a href="${item.link}" target="_blank">Read Article <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+        </div>
+      `
+        )
+        .join("");
+    }
+  </script>
+</body>
+</html>
